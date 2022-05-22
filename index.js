@@ -18,7 +18,7 @@ async function run() {
         await client.connect();
         const toolsCollection = client.db('ToolKits').collection('tools');
 
-        // Authentication
+        // JWT Authentication
         app.post('/login', (req, res) => {
             const user = req.body;
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
