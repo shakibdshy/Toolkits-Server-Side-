@@ -1,12 +1,20 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/programming-hero-web-course1/manufacturer-website-server-side-shakibdshy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/programming-hero-web-course1/manufacturer-website-server-side-shakibdshy/issues"
+  },
+  "homepage": "https://github.com/programming-hero-web-course1/manufacturer-website-server-side-shakibdshy#readme",
+  "description": ""
 }
