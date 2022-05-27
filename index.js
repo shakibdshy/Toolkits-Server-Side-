@@ -16,6 +16,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
+        console.log('Connected to MongoDB');
         const toolsCollection = client.db('ToolKits').collection('tools');
 
         // JWT Authentication
@@ -26,6 +27,13 @@ async function run() {
             });
             res.send({ accessToken });
         });
+
+        // Get Tools
+        app.get('/tools', async (req, res) => {
+            const query = {};
+            const tools = await toolsCollection.find(query).toArray();
+            res.send(tools);
+        })
      }
     finally {}
 }
