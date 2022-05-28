@@ -18,6 +18,7 @@ async function run() {
         await client.connect();
         console.log('Connected to MongoDB');
         const toolsCollection = client.db('ToolKits').collection('tools');
+        const reviewCollection = client.db('ToolKits').collection('reviews');
 
         // JWT Authentication
         app.post('/login', (req, res) => {
@@ -34,6 +35,20 @@ async function run() {
             const tools = await toolsCollection.find(query).toArray();
             res.send(tools);
         })
+
+        // Post Reviews
+        app.post('/add-review', async (req, res) => {
+            const review = req.body;
+            await reviewCollection.insertOne(review);
+            res.send({ success: true });        
+        });
+
+        //get all reviews
+        app.get('/reviews', async (req, res) => {
+            const result = await reviewCollection.find({}).toArray();
+            res.send(result);
+        })
+
      }
     finally {}
 }
