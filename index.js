@@ -36,6 +36,13 @@ async function run() {
             res.send(tools);
         })
 
+        // Get Tools
+        app.post('/tools', async (req, res) => {
+            const tool = req.body;
+            const result = await toolsCollection.insertOne(tool);
+            res.send({ success: true });
+        })
+
         //delete Tools
         app.delete('/tools/:id', async (req, res) => {
             const id = req.params.id;
