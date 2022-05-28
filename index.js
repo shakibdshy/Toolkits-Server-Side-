@@ -19,6 +19,7 @@ async function run() {
         console.log('Connected to MongoDB');
         const toolsCollection = client.db('ToolKits').collection('tools');
         const reviewCollection = client.db('ToolKits').collection('reviews');
+        const userCollection = client.db('ToolKits').collection('users');
 
         // JWT Authentication
         app.post('/login', (req, res) => {
@@ -62,6 +63,28 @@ async function run() {
             const result = await reviewCollection.find({}).toArray();
             res.send(result);
         })
+
+        //for user and setting up jwt
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: user,
+            };
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+            const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET)
+            res.send({ result, token });
+        });
+
+        //accessing an user
+        app.get('/user', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const result = await userCollection.findOne(query);
+            res.send(result);
+        });
 
      }
     finally {}
