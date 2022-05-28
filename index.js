@@ -36,6 +36,13 @@ async function run() {
             res.send(tools);
         })
 
+        //delete Tools
+        app.delete('/tools/:id', async (req, res) => {
+            const id = req.params.id;
+            const result = await toolsCollection.deleteOne({ _id: ObjectId(id) });
+            res.send({ success: true })
+        })
+
         // Post Reviews
         app.post('/add-review', async (req, res) => {
             const review = req.body;
