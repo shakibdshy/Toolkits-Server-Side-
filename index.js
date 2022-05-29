@@ -101,6 +101,14 @@ async function run() {
             res.send({ message: 'updated' });
         });
 
+        //specific order by query 
+        app.get('/orders', verifyJWT, async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const result = await orderCollection.find(query).toArray();
+            res.send(result);
+        });
+
         //sending to orders db
         app.post('/orders', async (req, res) => {
             const order = req.body;
@@ -111,14 +119,6 @@ async function run() {
         //all orders for admin
         app.get('/all-orders', verifyJWT, verifyAdmin, async (req, res) => {
             const result = await orderCollection.find({}).toArray();
-            res.send(result);
-        });
-
-        //specific order by query 
-        app.get('/orders', verifyJWT, async (req, res) => {
-            const email = req.query.email;
-            const query = { email: email };
-            const result = await orderCollection.find(query).toArray();
             res.send(result);
         });
 
@@ -167,13 +167,12 @@ async function run() {
         });
 
         //adding more info of an user
-        app.put('/user-update/:email', async (req, res) => {
+        app.put('/user-update/:email', verifyJWT, verifyAdmin, async (req, res) => {
             const email = req.params.email;
-            const userInfo = req.body;
             const filter = { email: email };
             const options = { upsert: true };
             const updateDoc = {
-                $set: userInfo,
+                $set: {role: 'admin'},
             };
             const result = await userCollection.updateOne(filter, updateDoc, options);
             // const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET)
