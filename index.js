@@ -117,7 +117,7 @@ async function run() {
         });
 
         //all orders for admin
-        app.get('/all-orders', verifyJWT, verifyAdmin, async (req, res) => {
+        app.get('/all-orders', async (req, res) => {
             const result = await orderCollection.find({}).toArray();
             res.send(result);
         });
@@ -128,8 +128,18 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
             res.send({ success: true, result });
-        })
+        });
 
+        //shipping
+        app.patch('/ship-order/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: { shipped: true },
+            };
+            const result = await orderCollection.updateOne(query, updateDoc);
+            res.send({ success: true });
+        });
 
         // Post Reviews
         app.post('/add-review', async (req, res) => {
